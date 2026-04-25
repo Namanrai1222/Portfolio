@@ -52,37 +52,6 @@ const observer = new IntersectionObserver((entries) => {
 }, observerOpts);
 animElements.forEach(el => observer.observe(el));
 
-// ============ PARALLAX BACKGROUND DRIFT ============
-// Slowly shift the fixed background as user scrolls for a continuous feel
-let ticking = false;
-window.addEventListener('scroll', () => {
-  if (!ticking) {
-    window.requestAnimationFrame(() => {
-      const scrollY = window.scrollY;
-      const maxScroll = document.body.scrollHeight - window.innerHeight;
-      const progress = scrollY / maxScroll; // 0 to 1
-
-      // Drift background subtly - move UP as user scrolls to keep coverage
-      const yShift = -(scrollY * 0.03);
-      const xShift = Math.sin(progress * Math.PI * 2) * 8;
-      document.body.style.setProperty('--bg-y', yShift + 'px');
-      document.body.style.setProperty('--bg-x', xShift + 'px');
-
-      ticking = false;
-    });
-    ticking = true;
-  }
-});
-
-// Apply CSS custom properties for background movement
-const style = document.createElement('style');
-style.textContent = `
-  body::before {
-    transform: translate3d(var(--bg-x, 0), var(--bg-y, 0), 0);
-  }
-`;
-document.head.appendChild(style);
-
 // ============ SCROLL HINT FADE ============
 const scrollHint = document.querySelector('.scroll-hint');
 if (scrollHint) {
