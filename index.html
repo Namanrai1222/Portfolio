@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,15 +8,20 @@
   <title>Aastha Sharma | Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Shantell+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Shantell+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
   <!-- NAVBAR -->
   <nav class="navbar" id="navbar">
     <div class="nav-inner">
-      <a href="#hero" class="nav-logo">AS /&gt;</a>
+      <a href="#hero" class="nav-logo">
+        <img src="assets/images/logo.jpeg" alt="AS Logo">
+      </a>
       <ul class="nav-links" id="nav-links">
         <li><a href="#hero" class="nav-link active">Home</a></li>
         <li><a href="#about" class="nav-link">About</a></li>
@@ -31,9 +37,12 @@
   <!-- SECTION 1: HERO — centered text only, no portrait -->
   <section id="hero" class="section hero">
     <div class="hero-content anim anim-fade-up">
+      <div class="hero-logo-container">
+        <img src="assets/images/logo.jpeg" alt="Aastha Sharma Logo" class="hero-logo">
+      </div>
       <h1 class="hero-name">Aastha Sharma</h1>
       <p class="hero-role">Ux Designer| Founder| Content creator</p>
-      <p class="hero-tagline">"My mind is always in orbit- revolving around ideas and work i am  building."</p>
+      <p class="hero-tagline">"My mind is always in orbit- revolving around ideas and work i am building."</p>
     </div>
   </section>
 
@@ -46,7 +55,9 @@
           <img src="assets/images/aastha.jpg" alt="Aastha Sharma" class="about-photo">
         </div>
         <div class="about-content anim anim-slide-left">
-          <p class="about-quote">"I'm Aastha, a designer guided by curiosity and creative thinking. Along my journey, I've taken on roles that involve initiating and leading design-driven projects, allowing me to explore both creativity and collaboration while shaping meaningful experiences."</p>
+          <p class="about-quote">"I'm Aastha, a designer guided by curiosity and creative thinking. Along my journey,
+            I've taken on roles that involve initiating and leading design-driven projects, allowing me to explore both
+            creativity and collaboration while shaping meaningful experiences."</p>
           <a href="#projects" class="btn-view-work" id="view-work-btn">View My Work→</a>
         </div>
       </div>
@@ -65,7 +76,8 @@
           </div>
           <div class="timeline-content">
             <span class="timeline-year">2024:</span>
-            <p>Began my UX design journey at DIT University, exploring creativity and research in user-centered design.</p>
+            <p>Began my UX design journey at DIT University, exploring creativity and research in user-centered design.
+            </p>
           </div>
         </div>
         <div class="timeline-item anim anim-fade-up" style="--delay:.25s">
@@ -99,35 +111,58 @@
         <svg class="constellation-svg" viewBox="0 0 800 550" xmlns="http://www.w3.org/2000/svg">
           <!-- Lines -->
           <g class="lines">
-            <line x1="420" y1="270" x2="580" y2="90"/>
-            <line x1="420" y1="270" x2="540" y2="140"/>
-            <line x1="420" y1="270" x2="310" y2="130"/>
-            <line x1="420" y1="270" x2="370" y2="180"/>
-            <line x1="420" y1="270" x2="280" y2="220"/>
-            <line x1="420" y1="270" x2="230" y2="310"/>
-            <line x1="420" y1="270" x2="130" y2="370"/>
-            <line x1="420" y1="270" x2="310" y2="420"/>
-            <line x1="420" y1="270" x2="210" y2="470"/>
-            <line x1="420" y1="270" x2="480" y2="340"/>
-            <line x1="580" y1="90" x2="540" y2="140"/>
-            <line x1="310" y1="130" x2="370" y2="180"/>
-            <line x1="280" y1="220" x2="230" y2="310"/>
-            <line x1="130" y1="370" x2="210" y2="470"/>
-            <line x1="210" y1="470" x2="310" y2="420"/>
-            <line x1="480" y1="340" x2="540" y2="140"/>
+            <line x1="420" y1="270" x2="580" y2="90" />
+            <line x1="420" y1="270" x2="540" y2="140" />
+            <line x1="420" y1="270" x2="310" y2="130" />
+            <line x1="420" y1="270" x2="370" y2="180" />
+            <line x1="420" y1="270" x2="280" y2="220" />
+            <line x1="420" y1="270" x2="230" y2="310" />
+            <line x1="420" y1="270" x2="130" y2="370" />
+            <line x1="420" y1="270" x2="310" y2="420" />
+            <line x1="420" y1="270" x2="210" y2="470" />
+            <line x1="420" y1="270" x2="480" y2="340" />
+            <line x1="580" y1="90" x2="540" y2="140" />
+            <line x1="310" y1="130" x2="370" y2="180" />
+            <line x1="280" y1="220" x2="230" y2="310" />
+            <line x1="130" y1="370" x2="210" y2="470" />
+            <line x1="210" y1="470" x2="310" y2="420" />
+            <line x1="480" y1="340" x2="540" y2="140" />
           </g>
           <!-- Dots with labels -->
-          <g class="dot-group"><circle cx="580" cy="90" r="4" fill="#fff"/><text x="596" y="95" class="dot-label">Curiosity</text></g>
-          <g class="dot-group"><circle cx="540" cy="140" r="4" fill="#fff"/><text x="556" y="145" class="dot-label">Balanced</text></g>
-          <g class="dot-group"><circle cx="310" cy="130" r="4" fill="#fff"/><text x="210" y="135" class="dot-label">Clarity</text></g>
-          <g class="dot-group"><circle cx="370" cy="180" r="4" fill="#fff"/><text x="376" y="175" class="dot-label">Logic</text></g>
-          <g class="dot-group center-dot"><circle cx="420" cy="270" r="5" fill="#fff"/><text x="436" y="275" class="dot-label dot-label-center">Design Philosophy</text></g>
-          <g class="dot-group"><circle cx="280" cy="220" r="4" fill="#fff"/><text x="200" y="225" class="dot-label">Impact</text></g>
-          <g class="dot-group"><circle cx="230" cy="310" r="4" fill="#fff"/><text x="130" y="315" class="dot-label">Empathy</text></g>
-          <g class="dot-group"><circle cx="480" cy="340" r="4" fill="#fff"/><text x="396" y="345" class="dot-label">Collaboration</text></g>
-          <g class="dot-group"><circle cx="130" cy="370" r="4" fill="#fff"/><text x="0" y="375" class="dot-label">Research oriented</text></g>
-          <g class="dot-group"><circle cx="310" cy="420" r="4" fill="#fff"/><text x="226" y="425" class="dot-label">User centric</text></g>
-          <g class="dot-group"><circle cx="210" cy="470" r="4" fill="#fff"/><text x="120" y="496" class="dot-label">Accessibility</text></g>
+          <g class="dot-group">
+            <circle cx="580" cy="90" r="4" fill="#fff" /><text x="596" y="95" class="dot-label">Curiosity</text>
+          </g>
+          <g class="dot-group">
+            <circle cx="540" cy="140" r="4" fill="#fff" /><text x="556" y="145" class="dot-label">Balanced</text>
+          </g>
+          <g class="dot-group">
+            <circle cx="310" cy="130" r="4" fill="#fff" /><text x="210" y="135" class="dot-label">Clarity</text>
+          </g>
+          <g class="dot-group">
+            <circle cx="370" cy="180" r="4" fill="#fff" /><text x="376" y="175" class="dot-label">Logic</text>
+          </g>
+          <g class="dot-group center-dot">
+            <circle cx="420" cy="270" r="5" fill="#fff" /><text x="436" y="275"
+              class="dot-label dot-label-center">Design Philosophy</text>
+          </g>
+          <g class="dot-group">
+            <circle cx="280" cy="220" r="4" fill="#fff" /><text x="200" y="225" class="dot-label">Impact</text>
+          </g>
+          <g class="dot-group">
+            <circle cx="230" cy="310" r="4" fill="#fff" /><text x="130" y="315" class="dot-label">Empathy</text>
+          </g>
+          <g class="dot-group">
+            <circle cx="480" cy="340" r="4" fill="#fff" /><text x="396" y="345" class="dot-label">Collaboration</text>
+          </g>
+          <g class="dot-group">
+            <circle cx="130" cy="370" r="4" fill="#fff" /><text x="0" y="375" class="dot-label">Research oriented</text>
+          </g>
+          <g class="dot-group">
+            <circle cx="310" cy="420" r="4" fill="#fff" /><text x="226" y="425" class="dot-label">User centric</text>
+          </g>
+          <g class="dot-group">
+            <circle cx="210" cy="470" r="4" fill="#fff" /><text x="120" y="496" class="dot-label">Accessibility</text>
+          </g>
         </svg>
       </div>
     </div>
@@ -168,10 +203,14 @@
         </div>
         <div class="indevaa-text anim anim-slide-left">
           <h3 class="indevaa-title">INDEVAA – DIGITAL GROWTH STUDIO</h3>
-          <p>Indevaa is a digital growth studio focused on helping small startups and D2C brands build a strong and impactful online presence.</p>
-          <p>We combine strategic design and digital marketing to create brands that not only look visually appealing but also perform effectively in the digital space.</p>
-          <p>Our approach is centered around understanding the brand's story, audience, and goals — and translating that into a clean, consistent, and conversion-focused digital presence.</p>
-          <p>From website design to content strategy, Indevaa works as a growth partner to ensure that brands attract, engage, and convert their audience.</p>
+          <p>Indevaa is a digital growth studio focused on helping small startups and D2C brands build a strong and
+            impactful online presence.</p>
+          <p>We combine strategic design and digital marketing to create brands that not only look visually appealing
+            but also perform effectively in the digital space.</p>
+          <p>Our approach is centered around understanding the brand's story, audience, and goals — and translating that
+            into a clean, consistent, and conversion-focused digital presence.</p>
+          <p>From website design to content strategy, Indevaa works as a growth partner to ensure that brands attract,
+            engage, and convert their audience.</p>
           <p>We don't just design — we build systems that help brands grow.</p>
         </div>
       </div>
@@ -182,9 +221,11 @@
   <section id="contact" class="section contact-section">
     <div class="section-inner contact-inner">
       <h2 class="contact-heading anim anim-fade-up">Got A Project?</h2>
-      <a href="mailto:hiremeaastha@gmail.com" class="contact-subtitle contact-link anim anim-fade-up" style="--delay:.1s">Let's Work Together</a>
+      <a href="mailto:hiremeaastha@gmail.com" class="contact-subtitle contact-link anim anim-fade-up"
+        style="--delay:.1s">Let's Work Together</a>
       <div class="contact-divider anim anim-fade" style="--delay:.15s"></div>
-      <p class="contact-open anim anim-fade-up" style="--delay:.2s">Open to collaborations, projects, and conversations.</p>
+      <p class="contact-open anim anim-fade-up" style="--delay:.2s">Open to collaborations, projects, and conversations.
+      </p>
       <div class="contact-details anim anim-fade-up" style="--delay:.3s">
         <p>Email: hiremeaastha@gmail.com</p>
         <p>LinkedIn: linkedin.com/in/aastha</p>
@@ -196,4 +237,5 @@
 
   <script src="script.js"></script>
 </body>
+
 </html>

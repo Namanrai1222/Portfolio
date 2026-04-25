@@ -10,11 +10,13 @@ const navLinks = document.getElementById('nav-links');
 hamburger.addEventListener('click', () => {
   hamburger.classList.toggle('open');
   navLinks.classList.toggle('open');
+  document.body.classList.toggle('no-scroll');
 });
 document.querySelectorAll('.nav-link').forEach(link => {
   link.addEventListener('click', () => {
     hamburger.classList.remove('open');
     navLinks.classList.remove('open');
+    document.body.classList.remove('no-scroll');
   });
 });
 
