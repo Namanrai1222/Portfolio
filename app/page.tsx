@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import Nav from '@/components/Nav';
 import Hero from '@/components/Hero';
@@ -46,43 +46,69 @@ const EnquiryModal = dynamic(() => import('@/components/EnquiryModal'), {
   loading: () => null,
 });
 
-export default function Home() {
-  const [loading, setLoading] = useState(true);
+function markBootComplete() {
+  document.body.classList.remove('boot-active');
+  document.documentElement.classList.remove('boot-active');
+  document.body.classList.add('boot-complete');
+  window.dispatchEvent(new Event('boot-complete'));
+}
 
-  // Disable browser scroll restoration on mount
+export default function Home() {
+  const [preloaderVisible, setPreloaderVisible] = useState(true);
+  const [bootComplete, setBootComplete] = useState(false);
+
   useEffect(() => {
+    document.body.classList.add('boot-active');
+    document.documentElement.classList.add('boot-active');
+
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
     }
     window.scrollTo(0, 0);
+
+    // Warm below-fold chunks while the boot sequence runs
+    void import('@/components/Stats');
+    void import('@/components/Work');
+    void import('@/components/Experience');
+    void import('@/components/Skills');
+    void import('@/components/About');
+    void import('@/components/Contact');
+
+    return () => {
+      document.body.classList.remove('boot-active');
+      document.documentElement.classList.remove('boot-active');
+    };
   }, []);
 
-  // Reset scroll to top when loading is completed
-  const handleLoadingComplete = () => {
-    setLoading(false);
+  const handleLoadingComplete = useCallback(() => {
+    setBootComplete(true);
+    markBootComplete();
+    setPreloaderVisible(false);
     window.scrollTo(0, 0);
-    // Double check on next animation frame
     requestAnimationFrame(() => {
       window.scrollTo(0, 0);
     });
-  };
+  }, []);
 
   return (
     <AchievementProvider>
-      <Preloader onComplete={handleLoadingComplete} />
-      {!loading && (
-        <main className="relative">
-          <Nav />
-          <Hero />
-          <Stats />
-          <Work />
-          <Experience />
-          <Skills />
-          <About />
-          <Contact />
-          <EnquiryModal />
-        </main>
-      )}
+      {/* Hero renders under the preloader so the panel wipe reveals ready content */}
+      <main className="relative">
+        <Nav />
+        <Hero />
+        {bootComplete && (
+          <>
+            <Stats />
+            <Work />
+            <Experience />
+            <Skills />
+            <About />
+            <Contact />
+            <EnquiryModal />
+          </>
+        )}
+      </main>
+      {preloaderVisible && <Preloader onComplete={handleLoadingComplete} />}
     </AchievementProvider>
   );
 }

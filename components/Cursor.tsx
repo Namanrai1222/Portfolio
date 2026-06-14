@@ -34,6 +34,7 @@ export function useCursor() {
 // ─── Provider ─────────────────────────────────────────────────────────────────
 export function CursorProvider({ children }: { children: React.ReactNode }) {
   const prefersReducedMotion = useReducedMotion();
+  const [bootComplete, setBootComplete] = useState(false);
   const [cursorVariant, setCursorVariant] = useState<'default' | 'hover' | 'card'>('default');
   const [cursorLabel, setCursorLabel] = useState('');
   const [isVisible, setIsVisible] = useState(false);
@@ -62,7 +63,17 @@ export function CursorProvider({ children }: { children: React.ReactNode }) {
   const handleMouseEnter = useCallback(() => setIsVisible(true), []);
 
   useEffect(() => {
-    if (prefersReducedMotion) return;
+    const activate = () => setBootComplete(true);
+    if (document.body.classList.contains('boot-complete')) {
+      setBootComplete(true);
+      return;
+    }
+    window.addEventListener('boot-complete', activate, { once: true });
+    return () => window.removeEventListener('boot-complete', activate);
+  }, []);
+
+  useEffect(() => {
+    if (prefersReducedMotion || !bootComplete) return;
 
     window.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseleave', handleMouseLeave);
@@ -73,14 +84,14 @@ export function CursorProvider({ children }: { children: React.ReactNode }) {
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mouseenter', handleMouseEnter);
     };
-  }, [handleMouseMove, handleMouseLeave, handleMouseEnter, prefersReducedMotion]);
+  }, [handleMouseMove, handleMouseLeave, handleMouseEnter, prefersReducedMotion, bootComplete]);
 
   const cursorSize = cursorVariant === 'default' ? 48 : 80;
 
   return (
     <CursorContext.Provider value={{ setCursorLabel, setCursorVariant }}>
       {children}
-      {!prefersReducedMotion && (
+      {!prefersReducedMotion && bootComplete && (
         <>
           {/* Large circle */}
           <AnimatePresence>

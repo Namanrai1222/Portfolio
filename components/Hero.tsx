@@ -168,22 +168,31 @@ const STATUSES = [
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 export default function Hero() {
   const [mounted, setMounted] = useState(false);
+  const [showParticles, setShowParticles] = useState(false);
   const { unlock } = useAchievements();
   const [statusIdx, setStatusIdx] = useState(0);
   
   useEffect(() => {
-    setMounted(true);
-    // Trigger welcome achievement after 1.5 seconds
-    const timer = setTimeout(() => {
-      unlock('welcome');
-    }, 1500);
+    // Start hero animations just before the panel wipe reveals content
+    const mountTimer = setTimeout(() => setMounted(true), 2000);
+
+    const onBoot = () => {
+      setShowParticles(true);
+      setTimeout(() => unlock('welcome'), 500);
+    };
+
+    if (document.body.classList.contains('boot-complete')) {
+      onBoot();
+    } else {
+      window.addEventListener('boot-complete', onBoot, { once: true });
+    }
 
     const statusTimer = setInterval(() => {
       setStatusIdx((prev) => (prev + 1) % STATUSES.length);
     }, 4000);
 
     return () => {
-      clearTimeout(timer);
+      clearTimeout(mountTimer);
       clearInterval(statusTimer);
     };
   }, [unlock]);
@@ -201,10 +210,12 @@ export default function Hero() {
       className="relative min-h-screen flex flex-col justify-between overflow-hidden"
       style={{ paddingTop: '80px' }}
     >
-      {/* Ambient particle field — behind everything */}
-      <div className="absolute inset-0 hidden lg:block" style={{ zIndex: 0 }}>
-        <ParticleField />
-      </div>
+      {/* Ambient particle field — behind everything, deferred until boot completes */}
+      {showParticles && (
+        <div className="absolute inset-0 hidden lg:block" style={{ zIndex: 0 }}>
+          <ParticleField />
+        </div>
+      )}
 
       {/* Top-left light source glow */}
       <div

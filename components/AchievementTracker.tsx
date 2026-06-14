@@ -91,6 +91,7 @@ const LOG_POOL = [
 ];
 
 function FloatingDevConsole() {
+  const [active, setActive] = useState(false);
   const [logs, setLogs] = useState<string[]>([
     'SYSTEM: Workspace live.',
     'AGENT: Node [127.0.0.1] active.',
@@ -99,6 +100,18 @@ function FloatingDevConsole() {
   const [isMinimized, setIsMinimized] = useState(false);
 
   useEffect(() => {
+    const activate = () => setActive(true);
+    if (document.body.classList.contains('boot-complete')) {
+      setActive(true);
+      return;
+    }
+    window.addEventListener('boot-complete', activate, { once: true });
+    return () => window.removeEventListener('boot-complete', activate);
+  }, []);
+
+  useEffect(() => {
+    if (!active) return;
+
     const timer = setInterval(() => {
       const nextLog = LOG_POOL[Math.floor(Math.random() * LOG_POOL.length)];
       const timestamp = new Date().toLocaleTimeString('en-US', {
@@ -110,7 +123,9 @@ function FloatingDevConsole() {
       setLogs((prev) => [...prev.slice(-2), `[${timestamp}] ${nextLog}`]);
     }, 6000);
     return () => clearInterval(timer);
-  }, []);
+  }, [active]);
+
+  if (!active) return null;
 
   return (
     <div className="fixed bottom-6 right-6 z-[99] hidden sm:flex flex-col select-none font-mono">
