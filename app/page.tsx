@@ -1,17 +1,50 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import Nav from '@/components/Nav';
 import Hero from '@/components/Hero';
-import Stats from '@/components/Stats';
-import Work from '@/components/Work';
-import Experience from '@/components/Experience';
-import Skills from '@/components/Skills';
-import About from '@/components/About';
-import Contact from '@/components/Contact';
 import Preloader from '@/components/Preloader';
-import EnquiryModal from '@/components/EnquiryModal';
 import { AchievementProvider } from '@/components/AchievementTracker';
+
+function SectionSkeleton() {
+  return <div className="section min-h-[200px]" aria-hidden="true" />;
+}
+
+const Stats = dynamic(() => import('@/components/Stats'), {
+  ssr: false,
+  loading: () => <SectionSkeleton />,
+});
+
+const Work = dynamic(() => import('@/components/Work'), {
+  ssr: false,
+  loading: () => <SectionSkeleton />,
+});
+
+const Experience = dynamic(() => import('@/components/Experience'), {
+  ssr: false,
+  loading: () => <SectionSkeleton />,
+});
+
+const Skills = dynamic(() => import('@/components/Skills'), {
+  ssr: false,
+  loading: () => <SectionSkeleton />,
+});
+
+const About = dynamic(() => import('@/components/About'), {
+  ssr: false,
+  loading: () => <SectionSkeleton />,
+});
+
+const Contact = dynamic(() => import('@/components/Contact'), {
+  ssr: false,
+  loading: () => <SectionSkeleton />,
+});
+
+const EnquiryModal = dynamic(() => import('@/components/EnquiryModal'), {
+  ssr: false,
+  loading: () => null,
+});
 
 export default function Home() {
   const [loading, setLoading] = useState(true);

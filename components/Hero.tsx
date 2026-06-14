@@ -2,11 +2,16 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
 import { Github, Linkedin, Mail, ArrowDown, Download } from 'lucide-react';
 import { letterVariants, eyebrowVariants, ctaVariants } from '@/lib/animations';
 import { CursorHover } from './Cursor';
-import ParticleField from './ParticleField';
+
+const ParticleField = dynamic(() => import('./ParticleField'), {
+  ssr: false,
+  loading: () => null,
+});
 import { ROLE_TAGS, SOCIAL } from '@/lib/constants';
 import { useAchievements } from './AchievementTracker';
 
