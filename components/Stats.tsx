@@ -1,37 +1,40 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { motion, useInView, animate, useMotionValue } from 'framer-motion';
 import { STATS } from '@/lib/constants';
 import type { StatItem } from '@/lib/types';
+
+function formatStatValue(item: StatItem, value: number) {
+  return item.numericValue < 1 ? value.toFixed(2) : Math.floor(value).toString();
+}
 
 function StatCounter({ item }: { item: StatItem }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
   const count = useMotionValue(0);
+  const [displayValue, setDisplayValue] = useState(item.value.replace(item.suffix ?? '', ''));
 
   useEffect(() => {
-    if (!inView) return;
+    if (!inView) {
+      setDisplayValue(item.value.replace(item.suffix ?? '', ''));
+      return;
+    }
 
     const controls = animate(count, item.numericValue, {
-      duration: 2,
+      duration: 1.1,
       ease: [0.16, 1, 0.3, 1],
       onUpdate(value) {
-        if (!ref.current) return;
-        const formatted =
-          item.numericValue < 1
-            ? value.toFixed(2)
-            : Math.floor(value).toString();
-        ref.current.textContent = formatted;
+        setDisplayValue(formatStatValue(item, value));
       },
     });
 
     return () => controls.stop();
-  }, [inView, count, item.numericValue]);
+  }, [inView, count, item]);
 
   return (
     <span className="font-mono font-medium" ref={ref}>
-      0
+      {displayValue}
     </span>
   );
 }
