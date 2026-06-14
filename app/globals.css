@@ -1,0 +1,397 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Color Themes ─────────────────────────────────────────────────────────── */
+:root {
+  --color-bg: #161413;
+  --color-surface: #201D1C;
+  --color-surface2: #272322;
+  --color-border: #2D2825;
+  --color-accent: #E27D60;
+  --color-accent2: #85A18C;
+  --color-accent3: #E8A87C;
+  --color-text1: #F7F4F0;
+  --color-text2: #B5ADA7;
+  --color-text3: #5C524B;
+  --color-accent-glow: rgba(226, 125, 96, 0.15);
+  --color-accent2-glow: rgba(133, 161, 140, 0.15);
+  --color-accent-glow-sm: rgba(226, 125, 96, 0.08);
+}
+
+[data-theme="sunset"] {
+  --color-bg: #0C0908;
+  --color-surface: #140F0D;
+  --color-surface2: #1D1613;
+  --color-border: #2B211E;
+  --color-accent: #F97316;
+  --color-accent2: #FBBF24;
+  --color-accent3: #EC4899;
+  --color-text1: #FFF7F5;
+  --color-text2: #A89894;
+  --color-text3: #5C4F4C;
+  --color-accent-glow: rgba(249, 115, 22, 0.2);
+  --color-accent2-glow: rgba(251, 191, 36, 0.2);
+  --color-accent-glow-sm: rgba(249, 115, 22, 0.1);
+}
+
+[data-theme="vaporwave"] {
+  --color-bg: #0F0A1A;
+  --color-surface: #170F26;
+  --color-surface2: #211636;
+  --color-border: #322152;
+  --color-accent: #EC4899;
+  --color-accent2: #06B6D4;
+  --color-accent3: #A855F7;
+  --color-text1: #FFF5FA;
+  --color-text2: #9F8CAE;
+  --color-text3: #524068;
+  --color-accent-glow: rgba(236, 72, 153, 0.2);
+  --color-accent2-glow: rgba(6, 182, 212, 0.2);
+  --color-accent-glow-sm: rgba(236, 72, 153, 0.1);
+}
+
+/* ─── Reset & Base ─────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  cursor: none;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text1);
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* ─── Custom Scrollbar ────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
+
+/* ─── Selection ────────────────────────────────────────────────────────────── */
+::selection {
+  background: var(--color-accent-glow);
+  color: var(--color-accent);
+}
+
+/* ─── Focus ────────────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ─── Cursor (hide native on desktop) ─────────────────────────────────────── */
+@media (pointer: fine) {
+  * { cursor: none !important; }
+}
+
+/* ─── Perspective for 3D letter animations ─────────────────────────────────── */
+.perspective-container {
+  perspective: 800px;
+  transform-style: preserve-3d;
+}
+
+/* ─── Clip path for hero photo ─────────────────────────────────────────────── */
+.photo-clip {
+  clip-path: polygon(
+    12% 0%,
+    88% 0%,
+    100% 12%,
+    100% 82%,
+    88% 100%,
+    12% 100%,
+    0% 88%,
+    0% 12%
+  );
+}
+
+/* ─── Shimmer sweep (card hover) ───────────────────────────────────────────── */
+.card-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.card-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(110, 231, 183, 0.06) 50%,
+    transparent 60%
+  );
+  transform: translateX(-100%);
+  transition: none;
+}
+.card-shimmer:hover::after {
+  animation: shimmer 0.6s ease forwards;
+}
+
+/* ─── Ambient letter float ─────────────────────────────────────────────────── */
+@keyframes letterFloat {
+  0%, 100% { transform: translateY(0px) rotate(var(--letter-rotate, 0deg)); }
+  50%       { transform: translateY(var(--float-y, -6px)) rotate(var(--letter-rotate, 0deg)); }
+}
+
+.letter-float {
+  animation: letterFloat var(--float-dur, 4s) ease-in-out infinite;
+  animation-delay: var(--float-delay, 0s);
+}
+
+/* ─── Gradient shimmer text ─────────────────────────────────────────────────── */
+.shimmer-text {
+  background: linear-gradient(
+    90deg,
+    var(--color-accent) 0%,
+    var(--color-accent2) 25%,
+    var(--color-accent3) 50%,
+    var(--color-accent2) 75%,
+    var(--color-accent) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmerText 3s linear infinite;
+}
+
+/* ─── Orbit tags ────────────────────────────────────────────────────────────── */
+.orbit-tag {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: 0 0;
+  animation: orbitTag var(--orbit-dur, 8s) linear infinite;
+}
+
+@keyframes orbitTag {
+  0%   { transform: rotate(0deg) translateX(var(--orbit-r, 120px)) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(var(--orbit-r, 120px)) rotate(-360deg); }
+}
+
+.orbit-tag:hover {
+  animation-play-state: paused;
+}
+
+/* ─── Skill bar glow edge ───────────────────────────────────────────────────── */
+.skill-bar-fill {
+  position: relative;
+}
+.skill-bar-fill::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #6EE7B7;
+  box-shadow: 0 0 8px #6EE7B7, 0 0 16px rgba(110, 231, 183, 0.5);
+  border-radius: 0 2px 2px 0;
+}
+
+/* ─── Code block theming ────────────────────────────────────────────────────── */
+.code-block {
+  background: #0F1117;
+  border: 1px solid #1C1F2E;
+  border-radius: 12px;
+  padding: 1.5rem;
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.code-keyword { color: #818CF8; }
+.code-string  { color: #6EE7B7; }
+.code-comment { color: #3D4455; }
+.code-key     { color: #F472B6; }
+.code-value   { color: #F0F4FF; }
+.code-number  { color: #fb923c; }
+
+/* ─── Section spacing ───────────────────────────────────────────────────────── */
+.section {
+  padding: 120px 0;
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 80px 0;
+  }
+}
+
+/* ─── Container ─────────────────────────────────────────────────────────────── */
+.container-max {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+@media (min-width: 768px) {
+  .container-max {
+    padding: 0 48px;
+  }
+}
+
+/* ─── Eyebrow label ─────────────────────────────────────────────────────────── */
+.eyebrow {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #6EE7B7;
+}
+
+/* ─── Availability badge pulse ──────────────────────────────────────────────── */
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4); }
+  50%       { opacity: 0.7; box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); }
+}
+
+.pulse-dot {
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
+/* ─── Horizontal scroll (certs) ─────────────────────────────────────────────── */
+.cert-scroll {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.cert-scroll::-webkit-scrollbar { display: none; }
+
+/* ─── Nav mobile overlay ────────────────────────────────────────────────────── */
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: #080A0F;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+/* ─── Strikethrough animation ───────────────────────────────────────────────── */
+@keyframes strikeThrough {
+  0%   { width: 0; }
+  100% { width: 100%; }
+}
+.strike-text {
+  position: relative;
+  display: inline-block;
+}
+.strike-text::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 2px;
+  background: #F472B6;
+  animation: strikeThrough 0.4s ease 2s forwards;
+  width: 0;
+}
+
+/* ─── prefers-reduced-motion ────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ─── Infinite Marquee Ticker ─────────────────────────────────────────────── */
+@keyframes marquee {
+  0%   { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* ─── CRT Scanline Effect ─────────────────────────────────────────────────── */
+.crt::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.25) 50%
+  ), linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.03),
+    rgba(0, 255, 0, 0.01),
+    rgba(0, 0, 255, 0.03)
+  );
+  z-index: 20;
+  background-size: 100% 3px, 6px 100%;
+  pointer-events: none;
+}
+
+.crt-flicker {
+  animation: crt-flicker-anim 0.2s infinite;
+}
+
+@keyframes crt-flicker-anim {
+  0%   { opacity: 0.992; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.992; }
+}
+
+/* ─── Tactile Paper Grain Overlay ────────────────────────────────────────── */
+body::after {
+  content: "";
+  position: fixed;
+  inset: -200%;
+  width: 500%;
+  height: 500%;
+  z-index: 99999;
+  opacity: 0.035;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  animation: grainNoise 8s steps(10) infinite;
+}
+
+@keyframes grainNoise {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -10%); }
+  20% { transform: translate(-15%, 5%); }
+  30% { transform: translate(7%, -25%); }
+  40% { transform: translate(-5%, 25%); }
+  50% { transform: translate(-15%, 10%); }
+  60% { transform: translate(15%, 0%); }
+  70% { transform: translate(0%, 15%); }
+  80% { transform: translate(3%, 35%); }
+  90% { transform: translate(-10%, 10%); }
+}
