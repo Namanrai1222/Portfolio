@@ -165,7 +165,7 @@ export default function Contact() {
                 className="space-y-4 bg-surface border border-border/60 rounded-2xl p-6 md:p-8"
               >
                 <p className="font-mono text-[10px] text-text3 uppercase tracking-widest mb-6">
-                  // Send a message
+                  {"// Send a message"}
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
