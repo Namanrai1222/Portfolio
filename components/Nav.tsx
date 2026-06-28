@@ -13,6 +13,26 @@ export default function Nav() {
   const prefersReducedMotion = useReducedMotion();
   const { scrollY } = useScroll();
 
+  // Smooth scroll to a section with offset for the fixed nav bar
+  const scrollToSection = (href: string) => {
+    const id = href.replace('#', '');
+    const el = document.getElementById(id);
+    if (!el) return;
+    const offset = window.innerWidth < 768 ? 64 : 80; // match nav heights
+    const top = el.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top, behavior: 'smooth' });
+  };
+
+  // Open/close mobile menu with body scroll lock
+  const openMenu = () => {
+    setMenuOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+  const closeMenu = () => {
+    setMenuOpen(false);
+    document.body.style.overflow = '';
+  };
+
   const backgroundColor = useTransform(
     scrollY,
     [0, 80],
@@ -50,11 +70,17 @@ export default function Nav() {
     return () => observers.forEach((obs) => obs.disconnect());
   }, []);
 
-  // Close menu on resize
+  // Close menu on resize (also restore scroll)
   useEffect(() => {
-    const handleResize = () => { if (window.innerWidth >= 768) setMenuOpen(false); };
+    const handleResize = () => {
+      if (window.innerWidth >= 768) closeMenu();
+    };
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      document.body.style.overflow = ''; // safety restore
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -107,9 +133,11 @@ export default function Nav() {
                     <a
                       href={item.href}
                       onClick={(e) => {
+                        e.preventDefault();
                         if (item.href === '#contact') {
-                          e.preventDefault();
                           window.dispatchEvent(new CustomEvent('open-enquiry'));
+                        } else {
+                          scrollToSection(item.href);
                         }
                       }}
                       className="font-dm text-sm text-text2 hover:text-text1 transition-colors duration-200"
@@ -143,7 +171,7 @@ export default function Nav() {
             {/* Mobile hamburger */}
             <button
               className="md:hidden text-text2 hover:text-text1 transition-colors"
-              onClick={() => setMenuOpen(!menuOpen)}
+              onClick={() => menuOpen ? closeMenu() : openMenu()}
               aria-label="Toggle menu"
             >
               {menuOpen ? <X size={22} /> : <Menu size={22} />}
@@ -164,7 +192,7 @@ export default function Nav() {
           >
             <button
               className="absolute top-5 right-6 text-text2 hover:text-text1"
-              onClick={() => setMenuOpen(false)}
+              onClick={closeMenu}
             >
               <X size={24} />
             </button>
@@ -177,10 +205,12 @@ export default function Nav() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.07, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                 onClick={(e) => {
-                  setMenuOpen(false);
+                  e.preventDefault();
+                  closeMenu();
                   if (item.href === '#contact') {
-                    e.preventDefault();
                     window.dispatchEvent(new CustomEvent('open-enquiry'));
+                  } else {
+                    setTimeout(() => scrollToSection(item.href), 300);
                   }
                 }}
               >
@@ -194,8 +224,8 @@ export default function Nav() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.35 }}
               onClick={(e) => {
-                setMenuOpen(false);
                 e.preventDefault();
+                closeMenu();
                 window.dispatchEvent(new CustomEvent('open-enquiry'));
               }}
             >

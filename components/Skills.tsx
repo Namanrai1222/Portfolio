@@ -20,9 +20,15 @@ export default function Skills() {
 
   const { unlock } = useAchievements();
   const terminalEndRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({
+        top: scrollContainerRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
   };
 
   useEffect(() => {
@@ -195,7 +201,9 @@ export default function Skills() {
 
         {/* Terminal Window */}
          <ScrollReveal delay={0.2} className="w-full max-w-[840px] mx-auto">
-          <div className="rounded-2xl border border-border/80 bg-[#1A1817] shadow-[0_0_50px_rgba(0,0,0,0.6)] overflow-hidden crt crt-flicker relative">
+          {/* PERF FIX: Removed crt-flicker class — it ran opacity animation every 200ms
+              forcing repaints on this large element. The .crt scanline overlay is kept (static). */}
+          <div className="rounded-2xl border border-border/80 bg-[#1A1817] shadow-[0_0_50px_rgba(0,0,0,0.6)] overflow-hidden crt relative">
             {/* Terminal Top bar */}
             <div className="flex items-center justify-between px-4 py-3 bg-[#24201F] border-b border-border/60 select-none relative z-30">
               <div className="flex items-center gap-2">
@@ -209,8 +217,13 @@ export default function Skills() {
               <div className="w-10 h-1" />
             </div>
 
-            {/* Terminal Body Screen */}
-            <div className="p-5 md:p-6 h-[380px] overflow-y-auto font-mono text-xs md:text-sm leading-relaxed space-y-2 select-text relative z-10">
+            {/* Terminal Body Screen — touch-action: pan-y lets touch events scroll this
+                container independently without conflicting with Lenis page scroll */}
+            <div
+              ref={scrollContainerRef}
+              className="p-5 md:p-6 h-[380px] overflow-y-auto font-mono text-xs md:text-sm leading-relaxed space-y-2 select-text relative z-10"
+              style={{ touchAction: 'pan-y' }}
+            >
               {history.map((line, idx) => {
                 if (!line) return null;
                 let colorClass = 'text-text2';

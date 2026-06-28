@@ -18,7 +18,7 @@ export default function ScrollReveal({
       variants={variants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: '-80px' }}
+      viewport={{ once: true, margin: '-40px' }}
       transition={{
         duration: 0.65,
         delay,

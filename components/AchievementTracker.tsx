@@ -76,105 +76,8 @@ const AchievementContext = createContext<AchievementContextType>({
 
 export const useAchievements = () => useContext(AchievementContext);
 
-// ─── Floating Dev Console Widget ─────────────────────────────────────────────
-const LOG_POOL = [
-  'RAG: Retextualizing context embeddings...',
-  'PIP: Scraping LinkedIn profile vectors...',
-  'SYS: Pushing notion lead schema...',
-  'RAG: Query matches: 0.94 cosine similarity.',
-  'n8n: Triggered webhook sequence [78B].',
-  'NLP: Evaluating TF-IDF word vectors...',
-  'SYS: Memory compaction successful...',
-  'MODEL: Explaining prediction weights...',
-  'DB: pgvector indexing verified.',
-  'SYS: Listening for pipeline events...',
-];
-
-function FloatingDevConsole() {
-  const [active, setActive] = useState(false);
-  const [logs, setLogs] = useState<string[]>([
-    'SYSTEM: Workspace live.',
-    'AGENT: Node [127.0.0.1] active.',
-    'MODEL: Loaded Llama index config.',
-  ]);
-  const [isMinimized, setIsMinimized] = useState(false);
-
-  useEffect(() => {
-    const activate = () => setActive(true);
-    if (document.body.classList.contains('boot-complete')) {
-      setActive(true);
-      return;
-    }
-    window.addEventListener('boot-complete', activate, { once: true });
-    return () => window.removeEventListener('boot-complete', activate);
-  }, []);
-
-  useEffect(() => {
-    if (!active) return;
-
-    const timer = setInterval(() => {
-      const nextLog = LOG_POOL[Math.floor(Math.random() * LOG_POOL.length)];
-      const timestamp = new Date().toLocaleTimeString('en-US', {
-        hour12: false,
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-      });
-      setLogs((prev) => [...prev.slice(-2), `[${timestamp}] ${nextLog}`]);
-    }, 6000);
-    return () => clearInterval(timer);
-  }, [active]);
-
-  if (!active) return null;
-
-  return (
-    <div className="fixed bottom-6 right-6 z-[99] hidden sm:flex flex-col select-none font-mono">
-      {isMinimized ? (
-        <button
-          onClick={() => setIsMinimized(false)}
-          className="bg-surface/95 border border-border/80 px-4 py-2.5 rounded-full backdrop-blur-md shadow-glow-sm hover:border-accent/40 text-text2 hover:text-accent flex items-center gap-2 text-[10px] tracking-wider uppercase font-semibold transition-all duration-300"
-        >
-          <span className="w-2 h-2 rounded-full bg-accent2 pulse-dot" />
-          Logger [Active]
-        </button>
-      ) : (
-        <div className="w-[300px] bg-surface/95 border border-border/85 rounded-2xl overflow-hidden backdrop-blur-md shadow-glow-sm relative p-0.5">
-          {/* Outer glow ring wrapper */}
-          <div className="absolute inset-0 border border-border/80 rounded-2xl pointer-events-none" />
-          
-          {/* Header */}
-          <div className="flex items-center justify-between px-4 py-2 bg-surface2/60 border-b border-border/60 rounded-t-2xl">
-            <span className="text-[9px] text-accent tracking-wider font-bold uppercase flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent2 animate-pulse" />
-              BUILD LOGGER v4.2
-            </span>
-            <button
-              onClick={() => setIsMinimized(true)}
-              className="text-text3 hover:text-accent font-bold text-xs p-1"
-              title="Minimize Console"
-            >
-              [-]
-            </button>
-          </div>
-          
-          {/* Logs */}
-          <div className="p-4 space-y-2.5 text-[10px] text-text2 max-h-[140px] overflow-y-auto">
-            {logs.map((log, idx) => (
-              <div key={idx} className="break-all whitespace-pre-wrap leading-relaxed border-l-2 border-accent/25 pl-2.5">
-                {log}
-              </div>
-            ))}
-            <div className="flex items-center gap-1.5 text-accent mt-1 pl-2.5">
-              <span className="text-text3 font-bold">&gt;</span>
-              <span className="text-[9px] tracking-wide font-medium">status: compiling...</span>
-              <span className="w-1 h-3 bg-accent animate-pulse" />
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
+// ─── Floating Dev Console Widget Removed ───────────────────────────────────────
+// (Removed to reduce visual clutter and performance overhead)
 
 export function AchievementProvider({ children }: { children: React.ReactNode }) {
   const [unlocked, setUnlocked] = useState<string[]>([]);
@@ -353,8 +256,7 @@ export function AchievementProvider({ children }: { children: React.ReactNode })
         )}
       </div>
 
-      {/* Floating CLI Logger Widget */}
-      <FloatingDevConsole />
+
 
       {/* Achievement Notification Banner */}
       <AnimatePresence>

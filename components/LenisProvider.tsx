@@ -21,14 +21,12 @@ function initLenis() {
 
   rafId = requestAnimationFrame(raf);
 
-  const onLenisScroll = () => {
-    window.dispatchEvent(new Event('scroll'));
-  };
-  lenis.on('scroll', onLenisScroll);
+  // PERF FIX: Removed window.dispatchEvent('scroll') on every Lenis tick.
+  // That was doubling scroll handler cost — framer-motion's useScroll hooks
+  // integrate with Lenis natively via the shared RAF loop.
 
   return () => {
     cancelAnimationFrame(rafId);
-    lenis.off('scroll', onLenisScroll);
     lenis.destroy();
   };
 }

@@ -119,21 +119,33 @@ export default function Experience() {
                     {/* Chapter details lists */}
                     <div className="space-y-4">
                       <div className="font-mono text-[10px] text-text3 uppercase tracking-widest">{"// DELIVERABLES ACCELERATOR"}</div>
-                      <ul className="space-y-3.5">
+                      {/* PERF FIX: Replaced 6 individual motion.li whileInView (= 6 IO observers)
+                          with a single motion.ul stagger container (= 1 IO observer per chapter).
+                          Same cascading reveal effect, 83% fewer Intersection Observers. */}
+                      <motion.ul
+                        className="space-y-3.5"
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, margin: '-40px' }}
+                        variants={{
+                          hidden: {},
+                          visible: { transition: { staggerChildren: 0.08, delayChildren: 0.15 } },
+                        }}
+                      >
                         {chap.bullets.map((bullet, bi) => (
                           <motion.li
                             key={bi}
                             className="flex items-start gap-3.5 font-dm text-sm text-text2 leading-relaxed"
-                            initial={{ opacity: 0, x: -10 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.15 + bi * 0.08, duration: 0.4 }}
+                            variants={{
+                              hidden: { opacity: 0, x: -10 },
+                              visible: { opacity: 1, x: 0, transition: { duration: 0.4 } },
+                            }}
                           >
                             <span className="text-accent font-mono text-[11px] mt-0.5 shrink-0 select-none">[{bi+1}]</span>
                             <span>{bullet}</span>
                           </motion.li>
                         ))}
-                      </ul>
+                      </motion.ul>
                     </div>
 
                   </div>

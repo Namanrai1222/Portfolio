@@ -50,18 +50,19 @@ export default function EnquiryModal() {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-[100] flex items-start justify-center bg-background/80 backdrop-blur-md overflow-y-auto px-4 py-8 md:py-16 select-none"
+          className="fixed inset-0 z-[100] flex items-start justify-center bg-[#161413]/95 overflow-y-auto px-4 py-8 md:py-16"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
         >
           {/* Modal Card */}
           <motion.div
             className="w-full max-w-[540px] bg-surface border border-border/80 rounded-3xl p-6 md:p-8 shadow-[0_0_50px_rgba(0,0,0,0.6)] relative overflow-hidden"
-            initial={{ y: '-100%', opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: '-100%', opacity: 0 }}
-            transition={{ type: 'spring', damping: 26, stiffness: 220 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
           >
             {/* Close Button */}
             <button

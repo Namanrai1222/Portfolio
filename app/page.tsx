@@ -8,7 +8,9 @@ import Preloader from '@/components/Preloader';
 import { AchievementProvider } from '@/components/AchievementTracker';
 
 function SectionSkeleton() {
-  return <div className="section min-h-[200px]" aria-hidden="true" />;
+  // Note: NOT using className="section" here to avoid scroll-margin-top
+  // interacting with browser anchor restoration during section mount
+  return <div className="min-h-[200px]" aria-hidden="true" />;
 }
 
 const Stats = dynamic(() => import('@/components/Stats'), {
@@ -61,9 +63,17 @@ export default function Home() {
     document.body.classList.add('boot-active');
     document.documentElement.classList.add('boot-active');
 
+    // Prevent browser from restoring scroll position from session history
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
     }
+
+    // Strip any URL hash so browser anchor-restoration can't jump to #about etc.
+    if (window.location.hash) {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+
+    // Force top immediately
     window.scrollTo(0, 0);
 
     // Warm below-fold chunks while the boot sequence runs
@@ -81,18 +91,22 @@ export default function Home() {
   }, []);
 
   const handleLoadingComplete = useCallback(() => {
-    setBootComplete(true);
     markBootComplete();
     setPreloaderVisible(false);
-    window.scrollTo(0, 0);
+
+    // SCROLL FIX: setBootComplete first so React mounts the sections,
+    // then use double-rAF to ensure we scrollTo(0,0) AFTER the browser
+    // has painted the newly mounted section DOM — not before.
+    setBootComplete(true);
     requestAnimationFrame(() => {
-      window.scrollTo(0, 0);
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+      });
     });
   }, []);
 
   return (
     <AchievementProvider>
-      {/* Hero renders under the preloader so the panel wipe reveals ready content */}
       <main className="relative">
         <Nav />
         <Hero />
